@@ -12,7 +12,7 @@ type User = {
 function Results() {
   const user1: User = {
     id: 1,
-    username: "employee_1",
+    username: "Loading...",
   };
 
   const users_1: User[] = [user1];
@@ -20,6 +20,16 @@ function Results() {
   const [users, setUsers] = useState<User[]>(users_1);
   const [originalUsers, setOriginalUsers] = useState<User[]>(users_1);
   const [selected, setSelected] = useState<string[]>([]);
+
+
+  const handleRemove = ()=>{
+    const allSelectedIds = selected.map(user => `user-${user}`);
+    document.querySelectorAll('p.class_select').forEach(element => {
+      if (!allSelectedIds.includes(element.id)) {
+        element.remove();
+      }
+    });
+  }
 
   useEffect(() => {
     fetch('https://jsonplaceholder.typicode.com/users')
@@ -42,8 +52,16 @@ function Results() {
       if(!document.getElementById(`user-${select}`)){
         const newP=document.createElement('p');
         newP.innerHTML=select;
+        const newSpan = document.createElement('span');
+        newSpan.innerHTML="X";
+        newSpan.classList.add("span-select");
+        newP.appendChild(newSpan);
         newP.classList.add("class-select","roboto-regular");
         newP.setAttribute("id",`user-${select}`)
+        newSpan.addEventListener("click",()=>{
+          
+          document.getElementById(`user-${select}`)?.remove();
+        })
         document.body.appendChild(newP)
       }
 
@@ -51,6 +69,11 @@ function Results() {
       console.log(selectedAllIds);
       document.querySelectorAll('p.class-select').forEach((element)=>{
         if(!selectedAllIds.includes(element.id)){
+          setSelected((prevSelected) => {
+            return prevSelected.filter((user) => {
+              return user !== select;
+            });
+          });
     element.remove();
         }
       })
@@ -58,12 +81,8 @@ function Results() {
     })
 
     // Remove unselected usernames
-    const allSelectedIds = selected.map(user => `user-${user}`);
-    document.querySelectorAll('p.class_select').forEach(element => {
-      if (!allSelectedIds.includes(element.id)) {
-        element.remove();
-      }
-    });
+    handleRemove();
+    
   }, [selected]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -94,15 +113,17 @@ function Results() {
               <div
                 key={user.id}
                 id='clicked'
-                className={selected.includes(user.username.toLocaleLowerCase()) ? `container_body_name` : `roboto-regular`}
+                className={selected.includes(user.username) ? `container_body_name` : `roboto-regular`}
                 onClick={() => {
-                  if (!selected.includes(user.username.toLocaleLowerCase())) {
-                    setSelected((prev: string[]) => [...prev, user.username.toLocaleLowerCase()]);
+                  if (!selected.includes(user.username)) {
+                    setSelected((prev: string[]) => [...prev, user.username]);
                   } else {
                     setSelected((prevSelected) => {
-                      return prevSelected.filter((select) => {
-                        return select !== user.username.toLocaleLowerCase();
+                     const newSelected= prevSelected.filter((select) => {
+                         select !== user.username;
                       });
+
+                      return newSelected
                     });
                   }
                 }}
