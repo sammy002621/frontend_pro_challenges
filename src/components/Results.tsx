@@ -21,16 +21,6 @@ function Results() {
   const [originalUsers, setOriginalUsers] = useState<User[]>(users_1);
   const [selected, setSelected] = useState<string[]>([]);
 
-
-  const handleRemove = ()=>{
-    const allSelectedIds = selected.map(user => `user-${user}`);
-    document.querySelectorAll('p.class_select').forEach(element => {
-      if (!allSelectedIds.includes(element.id)) {
-        element.remove();
-      }
-    });
-  }
-
   useEffect(() => {
     fetch('https://jsonplaceholder.typicode.com/users')
       .then(response => response.json())
@@ -49,7 +39,7 @@ function Results() {
     console.log("new users are:", selected);
 
     selected.forEach((select)=>{
-      if(!document.getElementById(`user-${select}`)){
+      if(!document.getElementById(`${select}`)){
         const newP=document.createElement('p');
         newP.innerHTML=select;
         const newSpan = document.createElement('span');
@@ -57,33 +47,29 @@ function Results() {
         newSpan.classList.add("span-select");
         newP.appendChild(newSpan);
         newP.classList.add("class-select","roboto-regular");
-        newP.setAttribute("id",`user-${select}`)
+        newP.setAttribute("id",`${select}`)
         newSpan.addEventListener("click",()=>{
-          
-          document.getElementById(`user-${select}`)?.remove();
+          document.getElementById(`${select}`)?.remove();
+          setSelected((prevSelected)=>{
+            return prevSelected.filter(user => user !== select);
+          })
         })
         document.body.appendChild(newP)
+      }else{
+        const allSelectedIds = selected.map(user => `${user}`);
+        document.querySelectorAll('p.class-select').forEach(element => {
+          if (!allSelectedIds.includes(element.id)) {
+            element.remove();
+          }
+        }); 
       }
-
-      const selectedAllIds=selected.map(user=>`user-${user}`);
-      console.log(selectedAllIds);
-      document.querySelectorAll('p.class-select').forEach((element)=>{
-        if(!selectedAllIds.includes(element.id)){
-          setSelected((prevSelected) => {
-            return prevSelected.filter((user) => {
-              return user !== select;
-            });
-          });
-    element.remove();
-        }
-      })
-
-    })
+    });
 
     // Remove unselected usernames
-    handleRemove();
+   
     
   }, [selected]);
+
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const searchQuery = e.target.value.toLocaleLowerCase();
@@ -119,11 +105,9 @@ function Results() {
                     setSelected((prev: string[]) => [...prev, user.username]);
                   } else {
                     setSelected((prevSelected) => {
-                     const newSelected= prevSelected.filter((select) => {
-                         select !== user.username;
+                      return prevSelected.filter((select) => {
+                        return select !== user.username;
                       });
-
-                      return newSelected
                     });
                   }
                 }}
