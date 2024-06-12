@@ -57,7 +57,7 @@ function Results() {
         document.body.appendChild(newP)
       }else{
         const allSelectedIds = selected.map(user => `${user}`);
-        document.querySelectorAll('p.class-select').forEach(element => {
+        document.querySelectorAll('p.class-select')?.forEach(element => {
           if (!allSelectedIds.includes(element.id)) {
             element.remove();
           }
