@@ -138,3 +138,10 @@ input{
   right: 0;
   cursor: pointer;
 }
+#search-div{
+  display: flex;
+  flex-wrap: wrap;
+}
+#clicked{
+  margin-right: 5px;
+}

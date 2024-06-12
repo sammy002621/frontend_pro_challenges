@@ -1,8 +1,6 @@
 
 import { useState, useEffect, ChangeEvent } from 'react';
-import { Link, NavLink, useSearchParams } from 'react-router-dom';
 import "../App.css";
-// import { Link } from 'react-router-dom';
 
 type User = {
   id: number,
@@ -54,7 +52,7 @@ function Results() {
             return prevSelected.filter(user => user !== select);
           })
         })
-        document.body.appendChild(newP)
+        document.getElementById("search-div")?.appendChild(newP)
       }else{
         const allSelectedIds = selected.map(user => `${user}`);
         document.querySelectorAll('p.class-select')?.forEach(element => {
@@ -117,7 +115,7 @@ function Results() {
             ))}
           </div>
 
-          <div id='search'></div>
+          <div id='search-div'></div>
         </div>
       </div>
     </>
