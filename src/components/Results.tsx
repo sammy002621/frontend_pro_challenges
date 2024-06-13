@@ -90,6 +90,7 @@ function Results() {
           {/* container_search_bar */}
           <div className='search'>
             <input type="text" placeholder='Search' id='search' onChange={handleChange} />
+            
           </div>
           {/* container_body */}
           <div className='container_body'>
@@ -116,6 +117,7 @@ function Results() {
           </div>
 
           <div id='search-div'></div>
+          
         </div>
       </div>
     </>
