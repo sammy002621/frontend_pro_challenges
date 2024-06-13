@@ -117,7 +117,7 @@ input{
 }
 
 .class-select{
-  border: 1px solid rgb(22, 22, 48);
+  background-color:  rgb(22, 22, 48);
   width: 200px;
   text-align: center;
   font-size: 20px;
@@ -128,13 +128,13 @@ input{
   margin-left: auto;
   margin-right: auto;
   position: relative;
+  color: white;
 }
 
 .span-select{
   position: absolute;
   margin-left: 30px;
   margin-right: 5px;
-  color: red;
   right: 0;
   cursor: pointer;
 }
