@@ -1,6 +1,7 @@
 
 import { useState, useEffect, ChangeEvent } from 'react';
 import "../App.css";
+import toast from 'react-hot-toast';
 
 type User = {
   id: number,
@@ -51,13 +52,16 @@ function Results() {
           setSelected((prevSelected)=>{
             return prevSelected.filter(user => user !== select);
           })
+          toast.error("select removed");
         })
-        document.getElementById("search-div")?.appendChild(newP)
+        document.getElementById("search-div")?.appendChild(newP);
+        toast.success("select added");
       }else{
         const allSelectedIds = selected.map(user => `${user}`);
         document.querySelectorAll('p.class-select')?.forEach(element => {
           if (!allSelectedIds.includes(element.id)) {
             element.remove();
+            toast.error("select removed");
           }
         }); 
       }
